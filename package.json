@@ -5,6 +5,7 @@
   "author": "Mike Basta",
   "dependencies": {
     "aws-amplify": "^1.0.8",
+    "aws-amplify-react": "^2.0.0",
     "gatsby": "^1.9.277",
     "gatsby-link": "^1.6.46",
     "gatsby-plugin-react-helmet": "^2.0.11",

@@ -2,7 +2,7 @@ import React from 'react'
 import Link from 'gatsby-link'
 import Amplify from 'aws-amplify'
 import configuration from '../aws-exports'
-
+import { withAuthenticator } from 'aws-amplify-react'
 Amplify.configure(configuration);
 
 const IndexPage = () => (
@@ -14,4 +14,4 @@ const IndexPage = () => (
   </div>
 )
 
-export default IndexPage
+export default withAuthenticator(IndexPage)
