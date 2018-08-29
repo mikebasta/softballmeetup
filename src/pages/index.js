@@ -1,5 +1,9 @@
 import React from 'react'
 import Link from 'gatsby-link'
+import Amplify from 'aws-amplify'
+import configuration from '../aws-exports'
+
+Amplify.configure(configuration);
 
 const IndexPage = () => (
   <div>
