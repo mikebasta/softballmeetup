@@ -1,6 +1,6 @@
 module.exports = {
   siteMetadata: {
-    title: 'Gatsby Default Starter',
+    title: 'San Francisco Softball Meetup',
   },
   plugins: ['gatsby-plugin-react-helmet'],
-}
+};
