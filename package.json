@@ -4,6 +4,7 @@
   "version": "1.0.0",
   "author": "Mike Basta",
   "dependencies": {
+    "antd": "^3.8.4",
     "aws-amplify": "^1.0.8",
     "aws-amplify-react": "^2.0.0",
     "gatsby": "^1.9.277",

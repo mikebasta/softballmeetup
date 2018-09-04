@@ -1,0 +1,8 @@
+.form-item .ant-form-item-label label {
+    text-transform: uppercase;
+}
+
+.form-item .ant-form-item-label label::after {
+    content: '';
+    text-transform: uppercase;
+}

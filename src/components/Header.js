@@ -10,6 +10,9 @@ const Header = ({ siteTitle }) => (
   >
     <div
       style={{
+      	display: 'flex',
+		  justifyContent: 'space-between',
+		  alignItems: 'center',
         margin: '0 auto',
         maxWidth: 960,
         padding: '1.45rem 1.0875rem',
@@ -26,6 +29,15 @@ const Header = ({ siteTitle }) => (
           {siteTitle}
         </Link>
       </h1>
+		<Link
+			to="/admin/"
+			style={{
+				color: 'white',
+				textDecoration: 'none',
+			}}
+		>
+			Sign in
+		</Link>
     </div>
   </div>
 );
