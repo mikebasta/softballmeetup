@@ -1,9 +1,9 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import Helmet from 'react-helmet'
+import React from 'react';
+import PropTypes from 'prop-types';
+import Helmet from 'react-helmet';
 
-import Header from '../components/Header'
-import './index.css'
+import Header from '../components/Header';
+import './index.css';
 
 const Layout = ({ children, data }) => (
   <div>
@@ -19,20 +19,20 @@ const Layout = ({ children, data }) => (
       style={{
         margin: '0 auto',
         maxWidth: 960,
-        padding: '0px 1.0875rem 1.45rem',
+        padding: '0px 0px 1.45rem',
         paddingTop: 0,
       }}
     >
       {children()}
     </div>
   </div>
-)
+);
 
 Layout.propTypes = {
   children: PropTypes.func,
-}
+};
 
-export default Layout
+export default Layout;
 
 export const query = graphql`
   query SiteTitleQuery {
@@ -42,4 +42,4 @@ export const query = graphql`
       }
     }
   }
-`
+`;

@@ -8,10 +8,16 @@ class AdminSideMenu extends React.Component {
 	};
 
 	render() {
+		const sideMenuStyle = {
+			width: 300,
+			height: 400,
+			boxShadow: '0 0 8px 1px rgba(0, 0, 0, 0.1)',
+		};
+
 		return (
 			<Menu
 				onClick={this.handleClick}
-				style={this.props.style}
+				style={sideMenuStyle}
 				defaultSelectedKeys={['1']}
 				defaultOpenKeys={['sub1']}
 				mode="inline"

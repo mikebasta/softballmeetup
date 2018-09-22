@@ -1,41 +1,29 @@
 import React from 'react';
 import AdminEntryForm from '../components/AdminEntryForm';
 import AdminSideMenu from '../components/AdminSideMenu';
-import Styles from './Styles';
+import './pages.css';
 
 class Admin extends React.Component {
-	state = {
-		players: ['Vien', 'Mike', 'Steven'],
-		fields: {
-			ab: {
-				value: '',
+	constructor(props) {
+		super(props);
+		this.state = {
+			players: ['Vien', 'Mike', 'Steven', 'Michael'],
+			fields: {
+				o: '',
+				"1b": '',
+				"2b": '',
+				"3b": '',
+				hr: '',
+				rbi: '',
+				r: '',
+				bb: '',
+				k: '',
+				sb: '',
+				cs: '',
+				ab: '',
 			},
-			"1b": {
-				value: '',
-			},
-			"2b": {
-				value: '',
-			},
-			"3b": {
-				value: '',
-			},
-			hr: {
-				value: '',
-			},
-			rbi: {
-				value: '',
-			},
-			r: {
-				value: '',
-			},
-			bb: {
-				value: '',
-			},
-			k: {
-				value: '',
-			},
-		},
-	};
+		};
+	}
 
 	componentDidMount() {
 		// fetch game data from Meetup api
@@ -43,23 +31,27 @@ class Admin extends React.Component {
 		// save to state or redux store
 	}
 
-	//handleFormChange = (changedFields) => {
-	//	console.log('handleFormChange', changedFields);
-	//	this.setState(({ fields }) => ({
-	//		fields: { ...fields, ...changedFields },
-	//	}));
-	//};
+	handleFormChange = (players) => {
+		//console.log('handleFormChange', players);
+		this.setState(() => ({
+			playerStats: players,
+		}));
+	};
 
 	render() {
-		const fields = this.state.fields;
+		const { fields, players, playerStats } = this.state;
 		return (
 			<div>
-				<div style={Styles.adminPage}>
-					<AdminSideMenu style={Styles.menu} />
-					<AdminEntryForm players={this.state.players} />
+				<div className="admin-page">
+					<AdminSideMenu />
+					<AdminEntryForm
+						players={players}
+						fields={fields}
+						onChange={this.handleFormChange}
+					/>
 				</div>
 				<pre className="language-bash">
-          			{JSON.stringify(fields, null, 2)}
+          			{JSON.stringify(playerStats, null, 2)}
         		</pre>
 			</div>
 		);
