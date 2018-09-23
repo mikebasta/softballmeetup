@@ -1,58 +1,38 @@
 import React from 'react';
-import AdminEntryForm from '../components/AdminEntryForm';
+import { makeData } from "../utils/Utils";
 import AdminSideMenu from '../components/AdminSideMenu';
-import './pages.css';
+import AdminStatsTable from '../components/AdminStatsTable';
 
 class Admin extends React.Component {
-	constructor(props) {
-		super(props);
+	constructor() {
+		super();
 		this.state = {
-			players: ['Vien', 'Mike', 'Steven', 'Michael'],
-			fields: {
-				o: '',
-				"1b": '',
-				"2b": '',
-				"3b": '',
-				hr: '',
-				rbi: '',
-				r: '',
-				bb: '',
-				k: '',
-				sb: '',
-				cs: '',
-				ab: '',
-			},
+			// temporarily make mock data
+			data: makeData()
 		};
 	}
 
 	componentDidMount() {
-		// fetch game data from Meetup api
-		// game metadata, players attended
-		// save to state or redux store
+		// fetch data from Meetup API
+		// game info like field, game number, number of players
+		// player list name and image
 	}
 
-	handleFormChange = (players) => {
-		//console.log('handleFormChange', players);
-		this.setState(() => ({
-			playerStats: players,
-		}));
+	componentDidUpdate(prevProps, prevState, snapshot) {
+		console.log('did update', { prevProps, prevState, snapshot });
+	}
+
+	handleSubmitData = () => {
+		// hit the submit button
+		// send state.data to server to update
 	};
 
 	render() {
-		const { fields, players, playerStats } = this.state;
+		const { data } = this.state;
 		return (
-			<div>
-				<div className="admin-page">
-					<AdminSideMenu />
-					<AdminEntryForm
-						players={players}
-						fields={fields}
-						onChange={this.handleFormChange}
-					/>
-				</div>
-				<pre className="language-bash">
-          			{JSON.stringify(playerStats, null, 2)}
-        		</pre>
+			<div className="admin-form">
+				<AdminSideMenu />
+				<AdminStatsTable data={data} />
 			</div>
 		);
 	}

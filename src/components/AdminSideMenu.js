@@ -9,9 +9,9 @@ class AdminSideMenu extends React.Component {
 
 	render() {
 		const sideMenuStyle = {
-			width: 300,
+			width: 250,
 			height: 400,
-			boxShadow: '0 0 8px 1px rgba(0, 0, 0, 0.1)',
+			border: '1px solid rgba(0, 0, 0, .1)',
 		};
 
 		return (

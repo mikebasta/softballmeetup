@@ -1,66 +1,44 @@
-/* ADMIN FORM */
-.admin-form {
+/* HEADER */
+.header {
+    background-color: rebeccapurple;
+    margin-bottom: 1.45rem;
+}
+
+.header-container {
     display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    width: 100%;
-    margin-left: 20px;
-    font-family:
-            -apple-system,
-            BlinkMacSystemFont,
-            Segoe UI,
-            Roboto,
-            Oxygen,
-            Ubuntu,
-            Cantarell,
-            Fira Sans,
-            Droid Sans,
-            Helvetica Neue,
-            sans-serif;
-    font-size: 12px;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 auto;
+    max-width: 1060px;
+    padding: 1.45rem 0;
 }
 
-.admin-form-container {
-    position: relative;
-    overflow: auto;
-}
-
-/* PLAYER STAT FORM */
-.stat-header-container,
-.admin-player-row {
-    display: flex;
-    flex-wrap: nowrap;
-    overflow: hidden;
-}
-
-/* STAT HEADERS */
-.stat-header-container {
-    position: sticky;
-    margin-bottom: 20px;
-}
-
-input[type="number"]::-webkit-outer-spin-button,
-input[type="number"]::-webkit-inner-spin-button {
-    -webkit-appearance: none;
+.header-h1 {
     margin: 0;
 }
 
-input[type="number"] {
-    -moz-appearance: textfield;
+.site-title {
+    color: white;
+    text-decoration: none;
 }
 
-.form-item-label {
-    display: inline-block;
-    align-self: center;
-    min-width: 100px;
-    text-transform: uppercase;
+/* ADMIN FORM */
+.admin-form {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+    width: 100%;
 }
 
-.stat-cell {
-    display: inline-block;
-    width: 30px;
-    min-width: 30px;
-    max-width: 30px;
-    margin: 0 5px;
-    border: 1px solid grey;
+.stat-table {
+    height: 600px; /* This will force the table body to overflow and scroll, since there is not enough room */
+    margin-bottom: 30px;
+}
+
+.stat-cell:focus {
+    outline: none;
+}
+
+.submit-button {
+    text-align: right;
 }
