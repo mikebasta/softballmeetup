@@ -22,8 +22,8 @@ class AdminSideMenu extends React.Component {
 				defaultOpenKeys={['sub1']}
 				mode="inline"
 			>
-				<Menu.Item key="1">Game Stats</Menu.Item>
-				<Menu.Item key="2">Player Stats</Menu.Item>
+				<Menu.Item key="1">Game #153 Westlake September 15th, 2018</Menu.Item>
+				<Menu.Item key="2">Game #154 Westlake September 22th, 2018</Menu.Item>
 			</Menu>
 		);
 	}

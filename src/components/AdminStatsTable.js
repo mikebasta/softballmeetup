@@ -14,7 +14,7 @@ class AdminStatsTable extends React.Component {
 	}
 
 	componentDidUpdate(prevProps, prevState, snapshot) {
-		console.log('did update', { prevProps, prevState, snapshot });
+		//console.log('did update', { prevProps, prevState, snapshot });
 	}
 
 	handleSubmitData = () => {
@@ -23,26 +23,22 @@ class AdminStatsTable extends React.Component {
 	};
 
 	renderEditable = (cellInfo) => {
-		//console.log('cellInfo', cellInfo);
+		const isStatColumn = cellInfo.column.Header !== 'PLAYER';
 		return (
 			<div
-				contentEditable
-				suppressContentEditableWarning
-				onBlur={e => {
+				contentEditable={isStatColumn}
+				suppressContentEditableWarning={isStatColumn}
+				onKeyUp={e => {
 					const value = Number(e.target.innerHTML);
 					const data = [...this.state.data];
-					// maybe use onKeyUp or onChange instead to get value of e.which
-					// console.log('e which', e.which);
 
-					//if (isNaN(String.fromCharCode(e.which))) {
-					//	e.preventDefault();
-					//}
-					if (isNaN(value)) {
+					if (isNaN(value) && isStatColumn) {
 						e.preventDefault();
 						data[cellInfo.index][cellInfo.column.id] = '';
 					} else {
 						data[cellInfo.index][cellInfo.column.id] = e.target.innerHTML;
 					}
+
 					this.setState(() => ({ data }));
 				}}
 				dangerouslySetInnerHTML={{
@@ -149,7 +145,7 @@ class AdminStatsTable extends React.Component {
 					<Button
 						type="primary"
 						htmlType="button"
-						onChange={this.props.onSubmit}
+						onChange={this.handleSubmitData}
 					>
 						Submit
 					</Button>
