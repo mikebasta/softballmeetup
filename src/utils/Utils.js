@@ -34,6 +34,7 @@ const range = len => {
 const newPerson = (player) => {
 	return {
 		player,
+		gameId: '',
 		o: '',
 		"1b": '',
 		"2b": '',
