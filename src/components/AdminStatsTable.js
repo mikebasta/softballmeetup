@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import ReactTable from "react-table";
 import { Button } from 'antd';
 import "react-table/react-table.css";
-import { sortByNameLength } from "../utils/Utils";
+import { Keys, Utils } from "../utils";
 
 class AdminStatsTable extends React.Component {
 	constructor(props) {
@@ -20,32 +20,50 @@ class AdminStatsTable extends React.Component {
 	handleSubmitData = () => {
 		// hit the submit button
 		// send state.data to server to update
+		this.props.onSubmit(this.state.data);
+	};
+
+	makeContentEditable = (cellInfo) => {
+		return !isNaN(cellInfo.value);
+	};
+
+	handleOnEnter = (e) => {
+		const tabKey = e.charCode === Keys.TAB;
+		const enterKey = e.charCode === Keys.ENTER;
+		const charKeys = isNaN(String.fromCharCode(e.charCode));
+		if (tabKey) {
+			return true;
+		}
+		if (enterKey || charKeys) {
+			e.preventDefault();
+			return false;
+		}
+		return true;
+	};
+
+	handleDataEntry = (cellInfo) => (e) => {
+		if (this.handleOnEnter(e)) {
+			const value = Number(e.target.innerHTML);
+			const data = [...this.state.data];
+			data[cellInfo.index][cellInfo.column.id] = value;
+
+			this.setState(() => ({ data }));
+		}
 	};
 
 	renderEditable = (cellInfo) => {
-		const isStatColumn = cellInfo.column.Header !== 'PLAYER';
+		const makeContentEditable = this.makeContentEditable(cellInfo);
+
 		return (
 			<div
-				contentEditable={isStatColumn}
-				suppressContentEditableWarning={isStatColumn}
-				onKeyUp={e => {
-					const value = Number(e.target.innerHTML);
-					const data = [...this.state.data];
-
-					if (isNaN(value) && isStatColumn) {
-						e.preventDefault();
-						data[cellInfo.index][cellInfo.column.id] = '';
-					} else {
-						data[cellInfo.index][cellInfo.column.id] = e.target.innerHTML;
-					}
-
-					this.setState(() => ({ data }));
-				}}
-				dangerouslySetInnerHTML={{
-					__html: this.state.data[cellInfo.index][cellInfo.column.id]
-				}}
 				className="stat-cell"
-			/>
+				contentEditable={makeContentEditable}
+				suppressContentEditableWarning
+				onKeyPress={this.handleOnEnter}
+				onKeyUp={this.handleDataEntry(cellInfo)}
+			>
+				{this.state.data[cellInfo.index][cellInfo.column.id]}
+			</div>
 		);
 	};
 
@@ -60,7 +78,7 @@ class AdminStatsTable extends React.Component {
 							Header: "PLAYER",
 							accessor: "player",
 							Cell: this.renderEditable,
-							sortMethod: sortByNameLength,
+							sortMethod: Utils.sortByNameLength,
 							maxWidth: 150,
 							width: 150,
 						},
@@ -145,7 +163,7 @@ class AdminStatsTable extends React.Component {
 					<Button
 						type="primary"
 						htmlType="button"
-						onChange={this.handleSubmitData}
+						onClick={this.handleSubmitData}
 					>
 						Submit
 					</Button>
