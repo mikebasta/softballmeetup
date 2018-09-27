@@ -1,5 +1,5 @@
 import React from 'react';
-import { makeData } from "../utils/Utils";
+import { Utils } from "../utils";
 import AdminSideMenu from '../components/AdminSideMenu';
 import AdminStatsTable from '../components/AdminStatsTable';
 
@@ -8,7 +8,7 @@ class Admin extends React.Component {
 		super();
 		this.state = {
 			// temporarily make mock data
-			data: makeData()
+			data: Utils.makeData()
 		};
 	}
 
@@ -22,9 +22,10 @@ class Admin extends React.Component {
 		console.log('did update', { prevProps, prevState, snapshot });
 	}
 
-	handleSubmitData = () => {
+	handleSubmitData = (data) => {
 		// hit the submit button
 		// send state.data to server to update
+		console.log('handleSubmitData', data);
 	};
 
 	render() {
@@ -32,7 +33,7 @@ class Admin extends React.Component {
 		return (
 			<div className="admin-form">
 				<AdminSideMenu />
-				<AdminStatsTable data={data} />
+				<AdminStatsTable data={data} onSubmit={this.handleSubmitData} />
 			</div>
 		);
 	}
