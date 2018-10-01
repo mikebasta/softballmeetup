@@ -12,11 +12,11 @@ class Admin extends React.Component {
 		};
 	}
 
-	componentDidMount() {
-		// fetch data from Meetup API
-		// game info like field, game number, number of players
-		// player list name and image
-	}
+	//componentDidMount() {
+	//	// fetch data from Meetup API
+	//	// game info like field, game number, number of players
+	//	// player list name and image
+	//}
 
 	componentDidUpdate(prevProps, prevState, snapshot) {
 		console.log('did update', { prevProps, prevState, snapshot });
