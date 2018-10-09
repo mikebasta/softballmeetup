@@ -3,52 +3,80 @@ import PropTypes from 'prop-types';
 import ReactTable from "react-table";
 import { Button } from 'antd';
 import "react-table/react-table.css";
-import { Keys, Utils } from "../utils";
+import { Utils } from "../utils";
 
 class AdminStatsTable extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			data: props.data,
+			dataSubmitted: false,
 		};
 	}
 
+	shouldComponentUpdate(nextProps, nextState, nextContext) {
+		return nextState.dataSubmitted;
+	}
+
 	componentDidUpdate(prevProps, prevState, snapshot) {
-		//console.log('did update', { prevProps, prevState, snapshot });
+		// after submitting the data, we need to reset this back to false
+		// to prevent unnecessary updates in shouldComponentUpdate
+		if (this.state.dataSubmitted) {
+			this.setState(() => ({ dataSubmitted: false }));
+		}
 	}
 
 	handleSubmitData = () => {
 		// hit the submit button
 		// send state.data to server to update
 		this.props.onSubmit(this.state.data);
+		this.setState(() => ({ dataSubmitted: true, data: this.props.data }));
 	};
 
 	makeContentEditable = (cellInfo) => {
 		return !isNaN(cellInfo.value);
 	};
 
-	handleOnEnter = (e) => {
-		const tabKey = e.charCode === Keys.TAB;
-		const enterKey = e.charCode === Keys.ENTER;
-		const charKeys = isNaN(String.fromCharCode(e.charCode));
-		if (tabKey) {
+	/**
+	 * Prevent non numeric keys from being triggered
+	 * Prevent enter key from going to a new line
+	 * @param e - event object from keyDown event
+	 */
+	handleNonNumericKeys = (e) => {
+		const enterKey = e.key === 'Enter';
+		const tabKey = e.key === 'Tab';
+		const leftKey = e.key === 'ArrowLeft';
+		const rightKey = e.key === 'ArrowRight';
+		const backSpaceKey = e.key === 'Backspace';
+		const charKeys = isNaN(Number(e.key));
+
+		// keep default browser behavior for these keys
+		if (backSpaceKey || tabKey || leftKey || rightKey) {
 			return true;
 		}
+
+		// prevent the default behavior of these keys
 		if (enterKey || charKeys) {
 			e.preventDefault();
-			return false;
 		}
-		return true;
 	};
 
+	/**
+	 * Save number entries to state
+	 * @param cellInfo - argument passed back from Cell renderer from React Table columns
+	 * @param e - event object from keyUp event
+	 */
 	handleDataEntry = (cellInfo) => (e) => {
-		if (this.handleOnEnter(e)) {
-			const value = Number(e.target.innerHTML);
-			const data = [...this.state.data];
-			data[cellInfo.index][cellInfo.column.id] = value;
+		let value = Number(e.key);
 
-			this.setState(() => ({ data }));
+		// do not save any values that are not numbers
+		if (isNaN(value)) {
+			return false;
 		}
+
+		const data = [...this.state.data];
+		data[cellInfo.index][cellInfo.column.id] = e.target.innerHTML;
+		this.setState(() => ({ data }));
 	};
 
 	renderEditable = (cellInfo) => {
@@ -59,7 +87,7 @@ class AdminStatsTable extends React.Component {
 				className="stat-cell"
 				contentEditable={makeContentEditable}
 				suppressContentEditableWarning
-				onKeyPress={this.handleOnEnter}
+				onKeyDown={this.handleNonNumericKeys}
 				onKeyUp={this.handleDataEntry(cellInfo)}
 			>
 				{this.state.data[cellInfo.index][cellInfo.column.id]}
