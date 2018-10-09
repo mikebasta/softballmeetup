@@ -12,15 +12,11 @@ class Admin extends React.Component {
 			data: Utils.makeData()
 		};
 	}
-	async componentDidMount(){
+  
+  async componentDidMount(){
 		let data = await API.get('playerstatsCRUD', '/playerstats/');
 		console.log('data', data);
 	}
-	//componentDidMount() {
-		// fetch data from Meetup API
-		// game info like field, game number, number of players
-		// player list name and image
-//	}
 
 	componentDidUpdate(prevProps, prevState, snapshot) {
 		let data = API.get('playerstatsCRUD', '/playerstats/');
