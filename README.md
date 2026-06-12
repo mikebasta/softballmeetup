@@ -1,103 +1,98 @@
+<h1 align="center">Meetup Softball Stats</h1>
+
 <p align="center">
-  <a href="https://www.meetup.com/San-Francisco-Softball-Players/">
-    San Francisco Softball Meetup
-  </a>
+  Stats and box scores for the
+  <a href="https://www.meetup.com/san-francisco-softball-players/">San Francisco Softball Meetup</a>
+  weekly pickup games.
 </p>
-<h1 align="center">
-  Meetup Softball Site
-</h1>
 
-The current meetup softball site is good but outdated. The goal of this project is to build a new 
-site that will be easier for admins to enter stats, introduce versioning so other developers can 
-easily contribute, add features that were requested a loooong time ago and redesign the site to 
-better organize information like stats, scores, join the group, etc.
+Anyone can browse player stats, game box scores, and leaderboards. Admins sign in to manage the
+roster, create games, and enter stats in a spreadsheet-style grid.
 
-## 🚀 Quick start
+## Tech stack
 
-1.  **Clone the repo.**
-    [Meetup Softball](https://github.com/mikebasta/softballmeetup.git)
+- [Next.js](https://nextjs.org/) (App Router, TypeScript, Tailwind CSS) — deployed on Vercel
+- [Supabase](https://supabase.com/) — Postgres database + auth, with row-level security
+  (public read, admin-only writes)
+- [TanStack Table](https://tanstack.com/table) for the sortable stats table
+- [Vitest](https://vitest.dev/) for the derived-stats unit tests
 
-2.  **Run the scripts.**
-    ```
-        # install the Gatsby CLI globally
-        npm install -g gatsby-cli
-    ```
-    
-3.  **Start developing.**
-    ```
-    # start a hot-reloading development environment accessible at `localhost:8000`
-    npm start
-    ```
+> **Note:** The original goal of pulling players/events from the Meetup API was dropped —
+> Meetup now requires a paid Pro subscription for API access. Rosters and games are managed
+> in-app instead.
 
-4.  **Open the source code and start editing!**
-    Open `pages/index.js`. This is the starting point. 
-      
-    Your site is now running at `http://localhost:8000`!
-    
-    *Note: You'll also see a second link: `http://localhost:8000___graphql`. This is a tool you can use to experiment with querying your data. Learn more about using this tool in the [Gatsby tutorial](https://next.gatsbyjs.org/tutorial/part-five/#introducing-graphiql).*
-    
-## 🧐 What's inside?
+## Local development
 
-A quick look at the top-level files and directories you'll see in a Gatsby project.
+Prereqs: Node 20+, Docker (for local Supabase).
 
-    .
-    ├── node_modules
-    ├── src
-    ├── .gitignore
-    ├── .prettierrc
-    ├── gatsby-browser.js
-    ├── gatsby-config.js
-    ├── gatsby-node.js
-    ├── gatsby-ssr.js
-    ├── LICENSE
-    ├── package-lock.json
-    ├── package.json
-    ├── README.md
-    └── yarn.lock
+```bash
+npm install
 
-  1.  **`/node_modules`**: The directory where all of the modules of code that your project depends on (npm packages) are automatically installed.  
-  
-  2.  **`/src`**: This directory will contain all of the code related to what you will see on the
-   front-end of your site (what you see in the browser), like your site header, or a page 
-   template. “Src” is a convention for “source code”. In your **`/pages`** folder, any file you 
-   create in here is treated as an individual page on the site. Gatsby creates an endpoint for 
-   this page.
-  
-  3.  **`.gitignore`**: This file tells git which files it should not track / not maintain a version history for.
-  
-  4.  **`.prettierrc`**: This is a configuration file for a tool called [Prettier](https://prettier.io/), which is a tool to help keep the formatting of your code consistent.
-  
-  5.  **`gatsby-browser.js`**: This file is where Gatsby expects to find any usage of the [Gatsby browser APIs](https://next.gatsbyjs.org/docs/browser-apis/) (if any). These allow customization/extension of default Gatsby settings affecting the browser.
-  
-  6.  **`gatsby-config.js`**: This is the main configuration file for a Gatsby site. This is where you can specify information about your site (metadata) like the site title and description, which Gatsby plugins you’d like to include, etc. (Check out the [config docs](https://next.gatsbyjs.org/docs/gatsby-config/) for more detail).
-  
-  7.  **`gatsby-node.js`**: This file is where Gatsby expects to find any usage of the [Gatsby node APIs](https://next.gatsbyjs.org/docs/node-apis/) (if any). These allow customization/extension of default Gatsby settings affecting pieces of the site build process.
-  
-  8.  **`gatsby-ssr.js`**: This file is where Gatsby expects to find any usage of the [Gatsby server-side rendering APIs](https://next.gatsbyjs.org/docs/ssr-apis/) (if any). These allow customization of default Gatsby settings affecting server-side rendering.
-  
-  9.  **`LICENSE`**: Gatsby is licensed under the MIT license.
-  
-  10.  **`package-lock.json`** (See `package.json` below, first). This is an automatically generated file based on the exact versions of your npm dependencies that were installed for your project. (You won’t change this file directly).
-  
-  11.  **`package.json`**: A manifest file for Node.js projects, which includes things like metadata (the project’s name, author, etc). This manifest is how npm knows which packages to install for your project.
-  
-  12.  **`README.md`**: A text file containing useful reference information about your project.
-  
-  13.  **`yarn.lock`**: [Yarn](https://yarnpkg.com/) is a package manager alternative to npm. You can use either yarn or npm, though all of the Gatsby docs reference npm.  This file serves essentially the same purpose as `package-lock.json`, just for a different package management system.
+# Start the local Supabase stack (Postgres, auth, API)
+npx supabase start
+```
 
-## Issues getting started
+`supabase start` prints an **API URL** and **anon key**. Put them in `.env.local`:
 
-`Error: RootQueryType.allSitePage field type must be Output Type but got: SitePageConnection.`
+```bash
+cp .env.example .env.local
+# then edit .env.local with the printed values
+```
 
-If you get this error message after cloning the repo, installing dependencies and starting the 
-project, there likely are multiple versions of `graphql` in the dependency tree. 
+Apply the schema and seed data (roster + a local-only admin account):
 
-[Issue #42](https://github.com/gatsbyjs/gatsby-starter-blog/issues/42)
+```bash
+npx supabase db reset
+```
 
-The following steps resolved the issue for me. Starting at the root level:
+Then run the dev server:
 
-1. Run `rm -rf public` and `rm -rf node_modules`
-2. Run `rm -r .cache`
-3. Run `rm yarn.lock` and `rm package-lock.json`
-4. Run `yarn install` or `npm install` to reinstall dependencies and generate new lock files.
-5. Run `yarn start` or `npm start`
+```bash
+npm run dev
+```
+
+- Site: http://localhost:3000
+- Local admin login: `admin@example.com` / `password123` (seeded for local dev only)
+- Supabase Studio (DB browser): http://localhost:54323
+
+## Scripts
+
+| Command | What it does |
+| --- | --- |
+| `npm run dev` | Dev server with hot reload |
+| `npm run build` | Production build |
+| `npm test` | Run unit tests (vitest) |
+| `npm run lint` | ESLint |
+| `npm run format` | Prettier on `src/` |
+| `npx supabase db reset` | Recreate local DB from migrations + seed |
+
+## Deploying
+
+1. **Supabase**: create a project at [supabase.com](https://supabase.com), then link and push the schema:
+   ```bash
+   npx supabase link --project-ref <your-project-ref>
+   npx supabase db push
+   ```
+2. **Create your admin user**: in the Supabase dashboard, Authentication → Users → *Add user*
+   (email + password, auto-confirm). Then in the SQL editor:
+   ```sql
+   insert into public.admins (user_id)
+   select id from auth.users where email = 'you@example.com';
+   ```
+   Add the roster the same way, or through the app's admin page once you're signed in.
+
+   ⚠️ Do **not** run `supabase/seed.sql` against production — it creates a demo admin with a
+   known password. Seed data is for local development.
+3. **Vercel**: import the GitHub repo at [vercel.com](https://vercel.com), and set the
+   environment variables from your Supabase project (Project Settings → API):
+   - `NEXT_PUBLIC_SUPABASE_URL`
+   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+
+Every push to `master` redeploys the site.
+
+## How data is protected
+
+All authorization lives in Postgres row-level security, not in app code: every table is
+publicly readable, and writes require the signed-in user to have a row in the `admins` table
+(checked by the `is_admin()` SQL function). The Next.js middleware/admin layout only improve
+UX — even a clever client can't write without an admin session.
